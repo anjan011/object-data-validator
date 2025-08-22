@@ -1,0 +1,34 @@
+{
+  "name": "object-data-validator",
+  "version": "1.0.0",
+  "description": "A JS utility to provide laravel like data validation service for a given object properties",
+  "keywords": [
+    "validation"
+  ],
+  "homepage": "https://github.com/anjan011/object-data-validator#readme",
+  "bugs": {
+    "url": "https://github.com/anjan011/object-data-validator/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anjan011/object-data-validator.git"
+  },
+  "license": "ISC",
+  "author": "Anjan Bhowmik",
+  "type": "commonjs",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "browser": "dist/bundle.umd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "watch": "rollup -c --watch"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.47.1"
+  },
+  "files": [
+    "dist"
+  ]
+}
