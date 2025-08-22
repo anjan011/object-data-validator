@@ -1,4 +1,5 @@
 import terser from '@rollup/plugin-terser';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
 
 export default {
     input: 'src/main.js', // Your source file
@@ -6,7 +7,7 @@ export default {
         {
             file: 'dist/bundle.umd.js',
             format: 'umd',
-            name: 'ValidatorLibrary', // The global variable name for <script> tag
+            name: 'ObjectDataValidator', // The global variable name for <script> tag
         },
         {
             file: 'dist/bundle.cjs.js',
@@ -20,7 +21,7 @@ export default {
         {
             file: 'dist/bundle.umd.min.js',
             format: 'umd',
-            name: 'ValidatorLibrary',
+            name: 'ObjectDataValidator',
             plugins: [terser()], // The syntax remains the same
         },
         {
@@ -35,4 +36,6 @@ export default {
             plugins: [terser()],
         },
     ],
+
+    plugins: [nodeResolve()],
 };

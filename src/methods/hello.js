@@ -1,4 +1,4 @@
-export default function hello() {
+export function hello() {
     console.log(`Data: `,this.data);
     console.log(`Data: `,this.rules);
 }
