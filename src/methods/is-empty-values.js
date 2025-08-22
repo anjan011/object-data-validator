@@ -33,11 +33,9 @@ export function _isEmptyArray(value) {
         return true;
     }
 
-    if (Array.isArray(value) && value.length === 0) {
-        return true;
-    }
+    return Array.isArray(value) && value.length === 0;
 
-    return false;
+
 }
 
 /**
@@ -53,11 +51,9 @@ export function _isEmptyObject(value) {
         return true;
     }
 
-    if (this.isPlainObject(value) && Object.keys(value).length === 0) {
-        return true;
-    }
+    return !!(this.isPlainObject(value) && Object.keys(value).length === 0);
 
-    return false;
+
 }
 
 export function isEmpty(value) {
@@ -74,10 +70,8 @@ export function isEmpty(value) {
         return true;
     }
 
-    if (this.isPlainObject(value) && Object.keys(value).length === 0) {
-        return true;
-    }
+    return !!(this.isPlainObject(value) && Object.keys(value).length === 0);
 
-    return false;
+
 
 }

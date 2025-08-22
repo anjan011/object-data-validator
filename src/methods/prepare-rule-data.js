@@ -3,13 +3,13 @@ export function prepareRuleDataFromParts({ruleName,data}) {
     let ruleData = {};
 
     switch(ruleName) {
-        case ObjectDataValidator.GREATER:
-        case ObjectDataValidator.GREATER_OR_EQUAL:
-        case ObjectDataValidator.LESSER:
-        case ObjectDataValidator.LESSER_OR_EQUAL:
+        case 'greater':
+        case 'greater_or_equal':
+        case 'lesser':
+        case 'lesser_or_equal':
             ruleData.target = data;
             break;
-        case ObjectDataValidator.LENGTH_BETWEEN:
+        case 'length_between':
 
             let rangeParts = data.split(',',2);
 

@@ -3,55 +3,51 @@ import {asInteger, asNumber, asString} from "./methods/data-conversion";
 import {getNestedValue, isNullOrUndefined, isPlainObject, objHasProp} from "./methods/data-type-utilities";
 import {targetValueString} from "./methods/data-values";
 import {isValidWithDateFns} from "./methods/date-time";
+import {generateDefaultMessage} from "./methods/default-message";
+import {getFieldLabelFromRules} from "./methods/fields";
+import {handleIndexInfo} from "./methods/index-handler";
+import {_isEmptyArray, _isEmptyObject, _isEmptyString, isEmpty} from "./methods/is-empty-values";
+import {isDeepEqual} from "./methods/object";
+import {prepareRuleDataFromParts} from "./methods/prepare-rule-data";
+import {replaceTags} from "./methods/regex";
+import {ruleError} from "./methods/rule-error";
+import {_isRequiredRule} from "./methods/rules";
+import {validate} from "./methods/validate";
+import {validateField} from "./methods/validate-field";
+import {validateRulesArray} from "./methods/validate-rules-array";
+import {validateWildcard} from "./methods/validate-wildcard";
+import {__validate_array} from "./methods/rules/array";
+import {__validate_date_object} from "./methods/rules/date_object";
+import {__validate_datetime_string} from "./methods/rules/datetime_string";
+import {__validate_email} from "./methods/rules/email";
+import {__validate_equals_array} from "./methods/rules/equals_array";
+import {__validate_equals_number} from "./methods/rules/equals_number";
+import {__validate_equals_string} from "./methods/rules/equals_string";
+import {__validate_exact_length} from "./methods/rules/exact_length";
+import {__validate_greater} from "./methods/rules/greater";
+import {__validate_greater_or_equal} from "./methods/rules/greater_or_equal";
+import {__validate_in_array} from "./methods/rules/in_array";
+import {__validate_integer} from "./methods/rules/integer";
+import {__validate_lesser} from "./methods/rules/lesser";
+import {__validate_lesser_or_equal} from "./methods/rules/lesser_or_equal";
+import {__validate_max_length} from "./methods/rules/max_length";
+import {__validate_min_length} from "./methods/rules/min_length";
+import {__validate_nullable} from "./methods/rules/nullable";
+import {__validate_number} from "./methods/rules/number";
+import {__validate_object} from "./methods/rules/object";
+import {__validate_regex_match} from "./methods/rules/regex_match";
+import {__validate_required} from "./methods/rules/required";
+import {__validate_required_if_target_empty} from "./methods/rules/required_if_target_empty";
+import {__validate_required_if_target_equals} from "./methods/rules/required_if_target_equals";
+import {__validate_required_if_target_not_empty} from "./methods/rules/required_if_target_not_empty";
+import {__validate_required_if_target_not_equals} from "./methods/rules/required_if_target_not_equals";
+import {__validate_string} from "./methods/rules/string";
 
 class ObjectDataValidator {
 
     /**
      * All rules as static...
      */
-
-    static NULLABLE = 'nullable';
-
-    static STRING = 'string';
-    static NUMBER = 'number';
-    static INTEGER = 'integer';
-    static ARRAY = 'array';
-    static OBJECT = 'object';
-
-    static EMAIL = 'email';
-
-
-    static DATE_OBJECT = 'date_object';
-    static DATETIME_STRING = 'datetime_string';
-
-    static EXACT_LENGTH = 'exact_length';
-    static MIN_LENGTH = 'min_length';
-    static MAX_LENGTH = 'max_length';
-    static LENGTH_BETWEEN = 'length_between';
-
-
-    static IN_ARRAY = 'in_array';
-
-    static EQUALS_STRING = 'equals_string';
-    static EQUALS_NUMBER = 'equals_number';
-    static EQUALS_ARRAY = 'equals_array';
-    //static EQUALS_OBJECT = 'equals_object';
-
-    static LESSER_OR_EQUAL = 'lesser_or_equal';
-    static GREATER_OR_EQUAL = 'greater_or_equal';
-
-    static LESSER = 'lesser';
-    static GREATER = 'greater';
-
-    static REGEX_MATCH = 'regex_match';
-
-    static REQUIRED = 'required';
-
-    static REQUIRED_IF_TARGET_EQUALS = 'required_if_target_equals';
-    static REQUIRED_IF_TARGET_NOT_EQUALS = 'required_if_target_not_equals';
-
-    static REQUIRED_IF_TARGET_EMPTY = 'required_if_target_empty';
-    static REQUIRED_IF_TARGET_NOT_EMPTY = 'required_if_target_not_empty';
 
     constructor({data = {}, rules = []}) {
 
@@ -68,7 +64,6 @@ class ObjectDataValidator {
 
 // Data conversion methods ...
 
-ObjectDataValidator.prototype.hello = hello;
 ObjectDataValidator.prototype.asString = asString;
 ObjectDataValidator.prototype.asNumber = asNumber;
 ObjectDataValidator.prototype.asInteger = asInteger;
@@ -88,5 +83,84 @@ ObjectDataValidator.prototype.targetValueString = targetValueString;
 // Date time ...
 
 ObjectDataValidator.prototype.isValidWithDateFns = isValidWithDateFns;
+
+// Default message ...
+
+ObjectDataValidator.prototype.generateDefaultMessage = generateDefaultMessage;
+
+// Fields ...
+
+ObjectDataValidator.prototype.getFieldLabelFromRules = getFieldLabelFromRules;
+
+// Index handlers ...
+
+ObjectDataValidator.prototype.handleIndexInfo = handleIndexInfo;
+
+// Empty values ...
+
+ObjectDataValidator.prototype._isEmptyString = _isEmptyString;
+ObjectDataValidator.prototype._isEmptyArray = _isEmptyArray;
+ObjectDataValidator.prototype._isEmptyObject = _isEmptyObject;
+ObjectDataValidator.prototype.isEmpty = isEmpty;
+
+// Object related ...
+
+ObjectDataValidator.prototype.isDeepEqual = isDeepEqual;
+
+// Prepare rule data ...
+
+ObjectDataValidator.prototype.prepareRuleDataFromParts = prepareRuleDataFromParts;
+
+// Regex tag replacer ...
+
+ObjectDataValidator.prototype.replaceTags = replaceTags;
+
+// Rule error related ...
+
+ObjectDataValidator.prototype.ruleError = ruleError;
+
+// Rules related ...
+
+ObjectDataValidator.prototype._isRequiredRule = _isRequiredRule;
+
+// Validate method ...
+
+ObjectDataValidator.prototype.validate = validate;
+ObjectDataValidator.prototype.validateField = validateField;
+ObjectDataValidator.prototype.validateRulesArray = validateRulesArray;
+ObjectDataValidator.prototype.validateWildcard = validateWildcard;
+
+// individual rule validation handlers ...
+
+ObjectDataValidator.prototype.__validate_array = __validate_array;
+ObjectDataValidator.prototype.__validate_date_object = __validate_date_object;
+ObjectDataValidator.prototype.__validate_datetime_string = __validate_datetime_string;
+ObjectDataValidator.prototype.__validate_email = __validate_email;
+ObjectDataValidator.prototype.__validate_equals_array = __validate_equals_array;
+ObjectDataValidator.prototype.__validate_equals_number = __validate_equals_number;
+ObjectDataValidator.prototype.__validate_equals_string = __validate_equals_string;
+ObjectDataValidator.prototype.__validate_exact_length = __validate_exact_length;
+ObjectDataValidator.prototype.__validate_greater = __validate_greater;
+ObjectDataValidator.prototype.__validate_greater_or_equal = __validate_greater_or_equal;
+ObjectDataValidator.prototype.__validate_in_array = __validate_in_array;
+ObjectDataValidator.prototype.__validate_integer = __validate_integer;
+ObjectDataValidator.prototype.__validate_lesser = __validate_lesser;
+ObjectDataValidator.prototype.__validate_lesser_or_equal = __validate_lesser_or_equal;
+ObjectDataValidator.prototype.__validate_max_length = __validate_max_length;
+ObjectDataValidator.prototype.__validate_min_length = __validate_min_length;
+ObjectDataValidator.prototype.__validate_nullable = __validate_nullable;
+ObjectDataValidator.prototype.__validate_number = __validate_number;
+ObjectDataValidator.prototype.__validate_object = __validate_object;
+ObjectDataValidator.prototype.__validate_regex_match = __validate_regex_match;
+ObjectDataValidator.prototype.__validate_required = __validate_required;
+ObjectDataValidator.prototype.__validate_required_if_target_empty = __validate_required_if_target_empty;
+ObjectDataValidator.prototype.__validate_required_if_target_equals = __validate_required_if_target_equals;
+ObjectDataValidator.prototype.__validate_required_if_target_not_empty = __validate_required_if_target_not_empty;
+ObjectDataValidator.prototype.__validate_required_if_target_not_equals = __validate_required_if_target_not_equals;
+ObjectDataValidator.prototype.__validate_string = __validate_string;
+
+/**
+ * Finally export!
+ */
 
 export default ObjectDataValidator;

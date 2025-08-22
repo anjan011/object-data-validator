@@ -34,7 +34,7 @@ export function generateDefaultMessage(rule, fieldLabel, ruleData) {
             return `${fieldLabel} is required`;
         case 'nullable':
             return `${fieldLabel} can be null`;
-        case ObjectDataValidator.REQUIRED_IF_TARGET_EQUALS:
+        case 'required_if_target_equals':
             return `${fieldLabel} is required is ${this.targetValueString(ruleData.target)}`;
         default:
             return `${fieldLabel} is invalid`;

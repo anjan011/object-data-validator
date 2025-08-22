@@ -20,7 +20,7 @@ export function validateField(fieldRule) {
      * @type {boolean}
      */
 
-    const hasNullableRule = rules.filter((r) => r.name === ObjectDataValidator.NULLABLE).length > 0;
+    const hasNullableRule = rules.filter((r) => r.name === 'nullable').length > 0;
 
     /**
      * Has any required rule?
@@ -85,7 +85,7 @@ export function validateField(fieldRule) {
 
 
         /*switch (name) {
-            case ObjectDataValidator.STRING:
+            case 'string':
 
                 if (hasNullableRule && _this._isEmptyString(fieldValue)) {
                     isValid = true;
@@ -95,15 +95,15 @@ export function validateField(fieldRule) {
                 isValid = typeof fieldValue === 'string';
 
                 break;
-            case ObjectDataValidator.NUMBER:
+            case 'number':
 
 
                 isValid = typeof fieldValue === 'number';
                 break;
-            case ObjectDataValidator.ARRAY:
+            case 'array':
                 isValid = Array.isArray(fieldValue);
                 break;
-            case ObjectDataValidator.OBJECT:
+            case ''object'':
                 isValid = fieldValue !== null && typeof fieldValue === 'object' && !Array.isArray(fieldValue);
                 break;
             case ObjectDataValidator.DATETIME:
@@ -169,11 +169,11 @@ export function validateField(fieldRule) {
                 isValid = Array.isArray(fieldValue) && JSON.stringify(fieldValue) === JSON.stringify(ruleData.target);
                 generatedMessage = generatedMessage.replace(/{target}/g, JSON.stringify(ruleData.target));
                 break;
-            case ObjectDataValidator.LESSER_OR_EQUAL:
+            case 'lesser_or_equal':
                 isValid = typeof fieldValue === 'number' && fieldValue <= ruleData.target;
                 generatedMessage = generatedMessage.replace(/{target}/g, ruleData.target);
                 break;
-            case ObjectDataValidator.GREATER_OR_EQUAL:
+            case 'greater'_OR_EQUAL:
                 isValid = typeof fieldValue === 'number' && typeof ruleData.target === 'number' && fieldValue >= ruleData.target;
                 if (!isValid) {
                     generatedMessage = generatedMessage.replace(/{target}/g, ruleData.target);
@@ -216,7 +216,7 @@ export function validateField(fieldRule) {
                     isValid = false;
                 }
                 break;
-            case ObjectDataValidator.REQUIRED_IF_TARGET_NOT_EMPTY:
+            case 'required_if_target_not_empty':
 
                 let target_field2 = _this.objHasProp(ruleData, 'target_field') ? ruleData.target_field : null;
 
@@ -227,7 +227,7 @@ export function validateField(fieldRule) {
                 const targetValue = _this.getNestedValue(this.data, ruleData.target_field);
                 isValid = !(targetValue && fieldValue === undefined);
                 break;
-            case ObjectDataValidator.REQUIRED_IF_TARGET_EQUALS:
+            case ''required_if_target_equals'':
 
                 let target_field = ruleData.target_field ?? '';
 
@@ -238,14 +238,14 @@ export function validateField(fieldRule) {
                 const targetValueEqual = this.getNestedValue(this.data, ruleData.target_field);
                 isValid = !(targetValueEqual === ruleData.value && fieldValue === undefined);
                 break;
-            case ObjectDataValidator.REQUIRED:
+            case 'required':
 
                 isValid = this.__validate_required({
                     fieldValue: this.getNestedValue(this.data, fieldName)
                 });
 
                 break;
-            case ObjectDataValidator.NULLABLE:
+            case 'nullable':
 
                 /!**
                  * Nullable is special, as it means a value for this field
