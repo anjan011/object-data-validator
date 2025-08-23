@@ -2,19 +2,19 @@ import terser from '@rollup/plugin-terser';
 import {nodeResolve} from '@rollup/plugin-node-resolve';
 
 const normal_bundles = [
-    /*{
+    {
         file: 'dist/bundle.umd.js',
         format: 'umd',
         name: 'ObjectDataValidator', // The global variable name for <script> tag
-    },*/
+    },
     {
         file: 'dist/bundle.cjs.js',
         format: 'cjs',
     },
-    /*{
+    {
         file: 'dist/bundle.esm.js',
         format: 'esm',
-    },*/
+    },
 ];
 
 const minified_bundles = [
@@ -42,7 +42,7 @@ export default {
     input: 'src/main.js', // Your source file
     output: [
 
-        //...normal_bundles,
+        ...normal_bundles,
         ...minified_bundles
 
     ],
