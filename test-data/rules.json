@@ -1,0 +1,324 @@
+[
+  {
+    "field_name": "name",
+    "field_label": "Name",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "length_between",
+        "data": {
+          "min_length": 5,
+          "max_length": 50
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "password",
+    "field_label": "Password",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "length_between",
+        "data": {
+          "min_length": 8,
+          "max_length": 16
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "email",
+    "field_label": "Email",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "email",
+        "message": "Invalid email: {value}"
+      },
+      {
+        "name": "length_between",
+        "data": {
+          "min_length": 10,
+          "max_length": 100
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "categories",
+    "field_label": "Categories",
+    "rules": [
+      {
+        "name": "nullable"
+      },
+      {
+        "name": "array"
+      }
+    ]
+  },
+  {
+    "field_name": "created_at",
+    "field_label": "Signup date",
+    "rules": [
+      {
+        "name": "nullable"
+      },
+      {
+        "name": "datetime_string",
+        "message": "Signup date mut be in this format: yyyy-mm-dd. Example: 2025-08-23"
+      }
+    ]
+  },
+  {
+    "field_name": "flags",
+    "field_label": "Account flags",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "array"
+      },
+      {
+        "name": "equals_array",
+        "data": {
+          "target": [
+            2,
+            1
+          ],
+          "keep_order": false
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "confirm_number",
+    "field_label": "Confirmation number",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "number"
+      },
+      {
+        "name": "equals_number",
+        "data": {
+          "target": 3454
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "confirm_code",
+    "field_label": "Confirmation code",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "equals_string",
+        "data": {
+          "target": "ABCD-1234",
+          "ignore_case": false
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "country_code",
+    "field_label": "Country code",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "exact_length",
+        "data": {
+          "length": 2
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "age",
+    "field_label": "Age",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "integer"
+      },
+      {
+        "name": "greater",
+        "data": {
+          "target": 65
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "height",
+    "field_label": "Height",
+    "rules": [
+      {
+        "name": "nullable"
+      },
+      {
+        "name": "number"
+      },
+      {
+        "name": "greater_or_equal",
+        "data": {
+          "target": 5.5
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "account_status",
+    "field_label": "Account status",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "in_array",
+        "data": {
+          "array": ["Active","Suspended","Deleted"]
+        },
+        "message": "Invalid account status: {value} Supported values: {list}"
+      }
+    ]
+  },
+  {
+    "field_name": "weight",
+    "field_label": "Weight",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "number"
+      },
+      {
+        "name": "lesser_or_equal",
+        "data": {
+          "target": 50
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "painkiller_intake",
+    "field_label": "Painkiller intake",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "number"
+      },
+      {
+        "name": "lesser",
+        "data": {
+          "target": 3
+        },
+        "message": "Your pain killer intake must be less than {target} tablet(s) per day"
+      }
+    ]
+  },
+  {
+    "field_name": "guid",
+    "field_label": "GUID",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "min_length",
+        "data": {
+          "length": 12
+        }
+      },
+      {
+        "name": "max_length",
+        "data": {
+          "length": 36
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "phone",
+    "field_label": "Phone",
+    "rules": [
+      "required",
+      "string",
+      {
+        "name": "regex_match",
+        "data": {
+          "regex": "^\\d{3}-\\d{3}-\\d{4}$"
+        },
+        "message": "Phone number must be in this format: 123-456-7890"
+      }
+    ]
+  },
+  {
+    "field_name": "department_name",
+    "field_label": "Department name",
+    "rules": [
+      {
+        "name": "required_if_target_empty",
+        "data": {
+          "target_field": "department_id"
+        },
+        "message": "Please provide department name, since no department was chosen from the list"
+      }
+    ]
+  },
+  {
+    "field_name": "vendor_id",
+    "field_label": "Vendor ID",
+    "rules": [
+      {
+        "name": "required_if_target_not_equals",
+        "data": {
+          "target_field": "site_id",
+          "value": 2122
+        },
+        "message": "If site id is not [{target}], then vendor id is required"
+      },
+      "integer"
+    ]
+  }
+]

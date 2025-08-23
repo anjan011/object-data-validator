@@ -9,7 +9,7 @@ export function __validate_equals_number({
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data, fieldName);
+    let fieldValue = this.getNestedValue(this.data, fieldName);
 
 
     /**
@@ -24,14 +24,16 @@ export function __validate_equals_number({
         };
     }
 
+    fieldValue = Number(fieldValue);
+
     /**
      * Ensure the value is string ...
      */
 
-    if (typeof fieldValue !== 'number') {
+    if (typeof fieldValue !== 'number' || isNaN(fieldValue)) {
         return {
             isValid: false,
-            message: `${fieldLabel} must be a number to assert equal numbers rule`,
+            message: `${fieldLabel} must be a valid number`,
             fieldValue
         }
     }
@@ -45,7 +47,11 @@ export function __validate_equals_number({
     if (typeof target !== 'number') {
         return {
             isValid: false,
-            message: `Target value must be a number for equal numbers match for [${fieldName}]`
+            message: this.ruleError({
+                fieldName,
+                ruleName : ruleObj.name,
+                error : `Target must be a valid number`
+            })
         };
     }
 
@@ -53,7 +59,7 @@ export function __validate_equals_number({
     if (fieldValue !== target) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly same as "${target}"`;
+        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly same as: ${target}`;
     }
 
     if (!isValid) {

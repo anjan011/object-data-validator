@@ -42,6 +42,7 @@ import {__validate_required_if_target_equals} from "./methods/rules/required_if_
 import {__validate_required_if_target_not_empty} from "./methods/rules/required_if_target_not_empty";
 import {__validate_required_if_target_not_equals} from "./methods/rules/required_if_target_not_equals";
 import {__validate_string} from "./methods/rules/string";
+import {__validate_length_between} from "./methods/rules/length_betwen";
 
 class ObjectDataValidator {
 
@@ -148,6 +149,7 @@ ObjectDataValidator.prototype.__validate_lesser = __validate_lesser;
 ObjectDataValidator.prototype.__validate_lesser_or_equal = __validate_lesser_or_equal;
 ObjectDataValidator.prototype.__validate_max_length = __validate_max_length;
 ObjectDataValidator.prototype.__validate_min_length = __validate_min_length;
+ObjectDataValidator.prototype.__validate_length_between = __validate_length_between;
 ObjectDataValidator.prototype.__validate_nullable = __validate_nullable;
 ObjectDataValidator.prototype.__validate_number = __validate_number;
 ObjectDataValidator.prototype.__validate_object = __validate_object;

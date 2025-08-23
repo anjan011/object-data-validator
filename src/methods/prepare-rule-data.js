@@ -9,6 +9,11 @@ export function prepareRuleDataFromParts({ruleName,data}) {
         case 'lesser_or_equal':
             ruleData.target = data;
             break;
+        case 'min_length':
+        case 'max_length':
+        case 'exact_length':
+            ruleData.length = data;
+            break;
         case 'length_between':
 
             let rangeParts = data.split(',',2);

@@ -40,8 +40,6 @@ export function validateRulesArray() {
 
                 if(r.indexOf(':') !== -1) {
 
-                    console.log(r.split(':', 2));
-
                     let parts = r.split(':',2);
 
                     ruleItem.rules[j] = {
@@ -51,8 +49,6 @@ export function validateRulesArray() {
                             data: parts[1]
                         })
                     };
-
-                    console.log(ruleItem.rules[j]);
 
                 } else {
                     ruleItem.rules[j] = {

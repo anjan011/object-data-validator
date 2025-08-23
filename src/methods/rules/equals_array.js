@@ -46,7 +46,20 @@ export function __validate_equals_array({
     if (!Array.isArray(target)) {
         return {
             isValid: false,
-            message: `Target value must be an array for equal array match for [${fieldName}]`
+            message: this.ruleError({
+                fieldName,
+                ruleName: ruleObj.name,
+                error: `Target must be a valid array`
+            })
+        };
+    } else if(target.length === 0) {
+        return {
+            isValid: false,
+            message: this.ruleError({
+                fieldName,
+                ruleName : ruleObj.name,
+                error : `Target array cannot be empty`
+            })
         };
     }
 

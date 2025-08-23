@@ -1,0 +1,25 @@
+{
+  "name": "Anjan Bhowmik",
+  "password": "overlord2004",
+  "email": "anjan@gmail.com",
+  "categories": [],
+  "created_at": "2000-12-23",
+  "flags": [
+    1,
+    2
+  ],
+  "confirm_number": "3454",
+  "confirm_code": "ABCD-1234",
+  "country_code": "US",
+  "age" : 66,
+  "height": 5.5,
+  "account_status": "Deleted",
+  "weight": 50,
+  "painkiller_intake": 2,
+  "guid": "XXXX-XXXX-XXXX-XXXXXXXXXXXX",
+  "phone": "167-055-6419",
+  "department_id" : null,
+  "department_name" : "Marketing",
+  "site_id": 212,
+  "vendor_id": []
+}

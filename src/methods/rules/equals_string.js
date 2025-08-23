@@ -9,7 +9,7 @@ export function __validate_equals_string({
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data, fieldName);
+    let fieldValue = this.getNestedValue(this.data, fieldName);
 
 
     /**
@@ -49,11 +49,17 @@ export function __validate_equals_string({
         };
     }
 
+    let ignore_case = !!this.getNestedValue(ruleObj,'data.ignore_case');
+
+    if(ignore_case) {
+        fieldValue = fieldValue.toLowerCase();
+        target = target.toLowerCase();
+    }
 
     if (fieldValue !== target) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly same as "${target}"`;
+        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly same as: "${target}"`;
     }
 
     if (!isValid) {

@@ -32,10 +32,6 @@ export function __validate_required_if_target_empty({
         target_field = target_field.replaceAll('*',index);
     }
 
-    console.log({
-        target_field_label : this.getFieldLabelFromRules(target_field)
-    });
-
     /**
      * Now get target field value ...
      */
