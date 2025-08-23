@@ -42,8 +42,8 @@ export default {
     input: 'src/main.js', // Your source file
     output: [
 
-        ...normal_bundles,
-        //...minified_bundles
+        //...normal_bundles,
+        ...minified_bundles
 
     ],
 

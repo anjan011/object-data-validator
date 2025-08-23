@@ -43,6 +43,7 @@ import {__validate_required_if_target_not_empty} from "./methods/rules/required_
 import {__validate_required_if_target_not_equals} from "./methods/rules/required_if_target_not_equals";
 import {__validate_string} from "./methods/rules/string";
 import {__validate_length_between} from "./methods/rules/length_betwen";
+import {__validate_required_if_target_in_array} from "./methods/rules/required_if_target_in_array";
 
 class ObjectDataValidator {
 
@@ -160,6 +161,7 @@ ObjectDataValidator.prototype.__validate_required_if_target_equals = __validate_
 ObjectDataValidator.prototype.__validate_required_if_target_not_empty = __validate_required_if_target_not_empty;
 ObjectDataValidator.prototype.__validate_required_if_target_not_equals = __validate_required_if_target_not_equals;
 ObjectDataValidator.prototype.__validate_string = __validate_string;
+ObjectDataValidator.prototype.__validate_required_if_target_in_array = __validate_required_if_target_in_array;
 
 /**
  * Finally export!

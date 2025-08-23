@@ -80,6 +80,11 @@ export function __validate_required_if_target_not_equals({
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        message = this.replaceTags(message,{
+            target : targetFieldValue,
+            match : valueToMatch
+        });
     }
 
     return {

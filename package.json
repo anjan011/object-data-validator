@@ -16,9 +16,9 @@
   "license": "ISC",
   "author": "Anjan Bhowmik",
   "type": "commonjs",
-  "main": "dist/bundle.cjs.js",
-  "module": "dist/bundle.esm.js",
-  "browser": "dist/bundle.umd.js",
+  "main": "dist/bundle.cjs.min.js",
+  "module": "dist/bundle.esm.min.js",
+  "browser": "dist/bundle.umd.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup -c",

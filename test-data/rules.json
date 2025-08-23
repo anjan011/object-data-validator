@@ -314,9 +314,27 @@
         "name": "required_if_target_not_equals",
         "data": {
           "target_field": "site_id",
-          "value": 2122
+          "value": 21300
         },
-        "message": "If site id is not [{target}], then vendor id is required"
+        "message": "If site id is not [{match}], then vendor id is required"
+      },
+      "integer"
+    ]
+  },
+  {
+    "field_name": "referrer_name",
+    "field_label": "Referer name",
+    "rules": [
+      {
+        "name": "required_if_target_in_array",
+        "data": {
+          "array": [
+            "Friends",
+            "Family"
+          ],
+          "target_field": "source"
+        },
+        "message": "Please provide referrer name"
       },
       "integer"
     ]
