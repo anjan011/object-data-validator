@@ -1,0 +1,27 @@
+[
+  {
+    "field_name": "birth_date",
+    "field_label": "Birth date",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "datetime_string",
+        "data": {
+          "format": "dd-MM-yyyy"
+        },
+        "message": "A valid birth date is required"
+      },
+      {
+        "name": "datetime_string_after",
+        "data": {
+          "date": "01-01-2025",
+          "format": "dd-MM-yyyy"
+        },
+        "message2": "You must be at least 18 years old"
+      }
+    ]
+
+  }
+]

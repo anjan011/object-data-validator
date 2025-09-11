@@ -48,3 +48,88 @@ export function getNestedValue(obj = {}, path = '') {
     }
     return value;
 }
+
+export function getNestedValueAsString(obj = {}, path = '', defaultValue = '') {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (this.isNullOrUndefined(value) || (typeof value !== 'string' && typeof value !== 'number')) {
+        return defaultValue;
+    }
+
+    return String(value);
+}
+
+export function getNestedValueAsNumber(obj = {}, path = '', defaultValue = 0) {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (this.isNullOrUndefined(value) || isNaN(Number(value))) {
+        return defaultValue;
+    }
+
+    return Number(value);
+}
+
+export function getNestedValueAsInteger(obj = {}, path = '', defaultValue = 0) {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (this.isNullOrUndefined(value) || isNaN(parseInt(value))) {
+        return defaultValue;
+    }
+
+    return parseInt(value);
+}
+
+export function getNestedValueAsBoolean(obj = {}, path = '', defaultValue = false) {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (this.isNullOrUndefined(value)) {
+        return defaultValue;
+    }
+
+    if (typeof value === 'boolean') {
+        return value;
+    }
+
+    if (typeof value === 'string') {
+        const val = value.toLowerCase().trim();
+        if (val === 'true' || val === '1') {
+            return true;
+        }
+        if (val === 'false' || val === '0') {
+            return false;
+        }
+        return defaultValue;
+    }
+
+    if (typeof value === 'number') {
+        return value !== 0;
+    }
+
+    return defaultValue;
+}
+
+export function getNestedValueAsArray(obj = {}, path = '', defaultValue = []) {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (!Array.isArray(value)) {
+        return defaultValue;
+    }
+
+    return value;
+}
+
+export function getNestedValueAsPlainObject(obj = {}, path = '', defaultValue = {}) {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (!this.isPlainObject(value)) {
+        return defaultValue;
+    }
+
+    return value;
+}

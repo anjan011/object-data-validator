@@ -1,6 +1,13 @@
 import {hello} from "./methods/hello";
 import {asInteger, asNumber, asString} from "./methods/data-conversion";
-import {getNestedValue, isNullOrUndefined, isPlainObject, objHasProp} from "./methods/data-type-utilities";
+import {
+    getNestedValue, getNestedValueAsArray, getNestedValueAsBoolean, getNestedValueAsInteger,
+    getNestedValueAsPlainObject,
+    getNestedValueAsString,
+    isNullOrUndefined,
+    isPlainObject,
+    objHasProp
+} from "./methods/data-type-utilities";
 import {targetValueString} from "./methods/data-values";
 import {isValidWithDateFns} from "./methods/date-time";
 import {generateDefaultMessage} from "./methods/default-message";
@@ -44,6 +51,8 @@ import {__validate_required_if_target_not_equals} from "./methods/rules/required
 import {__validate_string} from "./methods/rules/string";
 import {__validate_length_between} from "./methods/rules/length_betwen";
 import {__validate_required_if_target_in_array} from "./methods/rules/required_if_target_in_array";
+import {__validate_datetime_string_before} from "./methods/rules/datetime_string_before";
+import {__validate_datetime_string_after} from "./methods/rules/datetime_string_after";
 
 class ObjectDataValidator {
 
@@ -76,7 +85,15 @@ ObjectDataValidator.prototype.asInteger = asInteger;
 ObjectDataValidator.prototype.isNullOrUndefined = isNullOrUndefined;
 ObjectDataValidator.prototype.isPlainObject = isPlainObject;
 ObjectDataValidator.prototype.objHasProp = objHasProp;
+
+// Nested value ...
+
 ObjectDataValidator.prototype.getNestedValue = getNestedValue;
+ObjectDataValidator.prototype.getNestedValueAsString = getNestedValueAsString;
+ObjectDataValidator.prototype.getNestedValueAsArray = getNestedValueAsArray;
+ObjectDataValidator.prototype.getNestedValueAsBoolean = getNestedValueAsBoolean;
+ObjectDataValidator.prototype.getNestedValueAsInteger = getNestedValueAsInteger;
+ObjectDataValidator.prototype.getNestedValueAsPlainObject = getNestedValueAsPlainObject;
 
 // Data values ...
 
@@ -162,6 +179,9 @@ ObjectDataValidator.prototype.__validate_required_if_target_not_empty = __valida
 ObjectDataValidator.prototype.__validate_required_if_target_not_equals = __validate_required_if_target_not_equals;
 ObjectDataValidator.prototype.__validate_string = __validate_string;
 ObjectDataValidator.prototype.__validate_required_if_target_in_array = __validate_required_if_target_in_array;
+
+ObjectDataValidator.prototype.__validate_datetime_string_before = __validate_datetime_string_before;
+ObjectDataValidator.prototype.__validate_datetime_string_after = __validate_datetime_string_after;
 
 /**
  * Finally export!

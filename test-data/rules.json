@@ -338,5 +338,26 @@
       },
       "integer"
     ]
+  },
+  {
+    "field_name": "birth_date",
+    "field_label": "Birth date",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "datetime_string",
+        "message": "Birth date must be in this format: yyyy-mm-dd. Example: 2025-08-23"
+      },
+      {
+        "name": "datetime_string_before",
+        "data": {
+          "target": "2005-01-01"
+        },
+        "message": "You must be at least 18 years old"
+      }
+    ]
+
   }
 ]
