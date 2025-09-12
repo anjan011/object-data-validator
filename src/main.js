@@ -53,6 +53,7 @@ import {__validate_length_between} from "./methods/rules/length_betwen";
 import {__validate_required_if_target_in_array} from "./methods/rules/required_if_target_in_array";
 import {__validate_datetime_string_before} from "./methods/rules/datetime_string_before";
 import {__validate_datetime_string_after} from "./methods/rules/datetime_string_after";
+import {__validate_custom} from "./methods/rules/custom";
 
 class ObjectDataValidator {
 
@@ -182,6 +183,9 @@ ObjectDataValidator.prototype.__validate_required_if_target_in_array = __validat
 
 ObjectDataValidator.prototype.__validate_datetime_string_before = __validate_datetime_string_before;
 ObjectDataValidator.prototype.__validate_datetime_string_after = __validate_datetime_string_after;
+
+ObjectDataValidator.prototype.__validate_custom = __validate_custom;
+
 
 /**
  * Finally export!
