@@ -9,25 +9,6 @@ const data = require('./test-data/data_temp.json');
 
 const rules = require('./test-data/rules_temp.json');
 
-rules.push(
-    {
-        field_name: 'name',
-        field_label: 'Name',
-        rules: [
-            {name: 'required'},
-            {name: 'string'},
-            {
-                name: 'custom',
-                validateFunction: (value) => {
-                    return [];
-                },
-                message: 'The value must contain the word "required"',
-            }
-        ]
-    }
-);
-
-
 // Create an instance of your class
 const instance = new ObjectDataValidator({
     data: data,

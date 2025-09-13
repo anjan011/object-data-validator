@@ -1,4 +1,6 @@
 {
   "birth_date": "01-01-2025",
-  "name": "John Doe required"
+  "name": "John Doe",
+  "age" : 65,
+  "amount": -5000
 }

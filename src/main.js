@@ -1,7 +1,7 @@
 import {hello} from "./methods/hello";
 import {asInteger, asNumber, asString} from "./methods/data-conversion";
 import {
-    getNestedValue, getNestedValueAsArray, getNestedValueAsBoolean, getNestedValueAsInteger,
+    getNestedValue, getNestedValueAsArray, getNestedValueAsBoolean, getNestedValueAsInteger, getNestedValueAsNumber,
     getNestedValueAsPlainObject,
     getNestedValueAsString,
     isNullOrUndefined,
@@ -54,6 +54,8 @@ import {__validate_required_if_target_in_array} from "./methods/rules/required_i
 import {__validate_datetime_string_before} from "./methods/rules/datetime_string_before";
 import {__validate_datetime_string_after} from "./methods/rules/datetime_string_after";
 import {__validate_custom} from "./methods/rules/custom";
+import {__validate_min_value} from "./methods/rules/min_value";
+import {__validate_max_value} from "./methods/rules/max_value";
 
 class ObjectDataValidator {
 
@@ -94,6 +96,7 @@ ObjectDataValidator.prototype.getNestedValueAsString = getNestedValueAsString;
 ObjectDataValidator.prototype.getNestedValueAsArray = getNestedValueAsArray;
 ObjectDataValidator.prototype.getNestedValueAsBoolean = getNestedValueAsBoolean;
 ObjectDataValidator.prototype.getNestedValueAsInteger = getNestedValueAsInteger;
+ObjectDataValidator.prototype.getNestedValueAsNumber = getNestedValueAsNumber;
 ObjectDataValidator.prototype.getNestedValueAsPlainObject = getNestedValueAsPlainObject;
 
 // Data values ...
@@ -185,6 +188,8 @@ ObjectDataValidator.prototype.__validate_datetime_string_before = __validate_dat
 ObjectDataValidator.prototype.__validate_datetime_string_after = __validate_datetime_string_after;
 
 ObjectDataValidator.prototype.__validate_custom = __validate_custom;
+ObjectDataValidator.prototype.__validate_min_value = __validate_min_value;
+ObjectDataValidator.prototype.__validate_max_value = __validate_max_value;
 
 
 /**

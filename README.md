@@ -44,3 +44,5 @@ Added support for -
 Added support for -
 
 - custom
+- min_value
+- max_value

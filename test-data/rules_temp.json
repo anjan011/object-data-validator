@@ -23,5 +23,59 @@
       }
     ]
 
+  },
+  {
+    "field_name": "name",
+    "field_label": "Full name",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "string"
+      },
+      {
+        "name": "min_length",
+        "data": {
+          "length": 3
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "age",
+    "field_label": "Age",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "integer"
+      },
+      {
+        "name": "max_value",
+        "data": {
+          "value": "230"
+        }
+      }
+    ]
+  },
+  {
+    "field_name": "amount",
+    "field_label": "Amount",
+    "rules": [
+      {
+        "name": "required"
+      },
+      {
+        "name": "integer"
+      },
+      {
+        "name": "min_value",
+        "data": {
+          "value": "10000"
+        }
+      }
+    ]
   }
 ]
