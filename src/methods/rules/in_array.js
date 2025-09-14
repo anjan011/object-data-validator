@@ -3,7 +3,7 @@ export function __validate_in_array({ruleObj, fieldName, fieldLabel,index, hasNu
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data,fieldName);
+    let fieldValue = this.getNestedValueAsString(this.data,fieldName);
 
 
 
@@ -19,16 +19,14 @@ export function __validate_in_array({ruleObj, fieldName, fieldLabel,index, hasNu
         };
     }
 
-    /**
-     * Ensure the value is string or number ...
-     */
+    let target_data_type = this.getNestedValueAsString(ruleObj,'data.item_data_type','string');
 
-    if (typeof fieldValue !== 'string' && typeof fieldValue !== 'number') {
-        return {
-            isValid: false,
-            message: `${fieldLabel} must be a string or number to assert in array rule`,
-            fieldValue
-        }
+    if(!['string','number'].includes(target_data_type)) {
+        target_data_type = 'string';
+    }
+
+    if(target_data_type === 'number') {
+        fieldValue = this.getNestedValueAsNumber(this.data,fieldName);
     }
 
     /**
@@ -40,14 +38,20 @@ export function __validate_in_array({ruleObj, fieldName, fieldLabel,index, hasNu
     if(!Array.isArray(array) || array.length === 0) {
         return {
             isValid: false,
-            message : `Target array is not provided or empty for in array match for [${fieldName}]`
+            message : this.ruleError({
+                fieldName,
+                ruleName : ruleObj.name,
+                error : `Target must be a non-empty array`
+            })
         };
     }
 
     if(!array.includes(fieldValue)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be one of the values from this list: ${JSON.stringify(array)}`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must included in the target set of values`;
     }
 
     if (!isValid) {
@@ -57,15 +61,22 @@ export function __validate_in_array({ruleObj, fieldName, fieldLabel,index, hasNu
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
 
 
-    message = this.replaceTags(message,{
-        array: JSON.stringify(array),
-        list: JSON.stringify(array),
-        value : fieldValue,
-    });
+
 
     return {
         isValid,

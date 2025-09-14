@@ -9,7 +9,7 @@ export function __validate_equals_number({
     let isValid = true;
     let message = '';
 
-    let fieldValue = this.getNestedValue(this.data, fieldName);
+    let fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
 
     /**
@@ -24,43 +24,41 @@ export function __validate_equals_number({
         };
     }
 
-    fieldValue = Number(fieldValue);
+    fieldValue = fieldValue.trim();
 
-    /**
-     * Ensure the value is string ...
-     */
+    if(fieldValue !== '') {
 
-    if (typeof fieldValue !== 'number' || isNaN(fieldValue)) {
-        return {
-            isValid: false,
-            message: `${fieldLabel} must be a valid number`,
-            fieldValue
+        fieldValue = Number(fieldValue);
+
+        /**
+         * Else, value must be a strict number data type!
+         */
+
+        let target = this.getNestedValue(ruleObj, 'data.target');
+
+        if (typeof target !== 'number') {
+            return {
+                isValid: false,
+                message: this.ruleError({
+                    fieldName,
+                    ruleName : ruleObj.name,
+                    error : `Target must be a valid number`
+                })
+            };
         }
-    }
 
-    /**
-     * Else, value must be a strict number data type!
-     */
 
-    let target = this.getNestedValue(ruleObj, 'data.target');
+        if (fieldValue !== target) {
 
-    if (typeof target !== 'number') {
-        return {
-            isValid: false,
-            message: this.ruleError({
-                fieldName,
-                ruleName : ruleObj.name,
-                error : `Target must be a valid number`
-            })
-        };
+            isValid = false;
+            message = ruleObj.message ?
+                ruleObj.message :
+                `${fieldLabel} must be exactly same as: ${target}`;
+        }
+
     }
 
 
-    if (fieldValue !== target) {
-
-        isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly same as: ${target}`;
-    }
 
     if (!isValid) {
         /**
@@ -69,12 +67,20 @@ export function __validate_equals_number({
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
-    message = this.replaceTags(message, {
-        target: target,
-        value: fieldValue
-    });
+
 
     return {
         isValid,

@@ -3,14 +3,14 @@ export function __validate_integer({ruleObj, fieldName, fieldLabel,index, hasNul
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data,fieldName);
+    const fieldValue = this.getNestedValueAsString(this.data,fieldName);
 
     /**
      * If has the nullable rule and value is an empty string,
      * the rule passes.
      */
 
-    if(hasNullableRule && this.isNullOrUndefined(fieldValue)) {
+    if(hasNullableRule && this._isEmptyString(fieldValue)) {
         return  {
             isValid : true,
             message : ''
@@ -26,7 +26,9 @@ export function __validate_integer({ruleObj, fieldName, fieldLabel,index, hasNul
     if(!(!isNaN(num) && Number.isInteger(num))) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid integer`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be a valid integer`;
     }
 
     if (!isValid) {
@@ -36,6 +38,17 @@ export function __validate_integer({ruleObj, fieldName, fieldLabel,index, hasNul
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
     return {

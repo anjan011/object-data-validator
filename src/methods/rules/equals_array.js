@@ -1,10 +1,10 @@
 export function __validate_equals_array({
-                                                                      ruleObj,
-                                                                      fieldName,
-                                                                      fieldLabel,
-                                                                      index,
-                                                                      hasNullableRule
-                                                                  }) {
+                                            ruleObj,
+                                            fieldName,
+                                            fieldLabel,
+                                            index,
+                                            hasNullableRule
+                                        }) {
 
     let isValid = true;
     let message = '';
@@ -25,23 +25,10 @@ export function __validate_equals_array({
     }
 
     /**
-     * Ensure the value is string ...
-     */
-
-    if (!Array.isArray(fieldValue)) {
-        return {
-            isValid: false,
-            message: `${fieldLabel} must be an array to assert equal array rule`,
-            fieldValue
-        }
-    }
-
-    /**
      * Else, value must be a strict number data type!
      */
 
     let target = this.getNestedValue(ruleObj, 'data.target');
-    let keep_order = !!this.getNestedValue(ruleObj, 'data.keep_order');
 
     if (!Array.isArray(target)) {
         return {
@@ -52,20 +39,22 @@ export function __validate_equals_array({
                 error: `Target must be a valid array`
             })
         };
-    } else if(target.length === 0) {
+    } else if (target.length === 0) {
         return {
             isValid: false,
             message: this.ruleError({
                 fieldName,
-                ruleName : ruleObj.name,
-                error : `Target array cannot be empty`
+                ruleName: ruleObj.name,
+                error: `Target array cannot be empty`
             })
         };
     }
 
+    let keep_order = this.getNestedValueAsBoolean(ruleObj, 'data.keep_order');
+
     let fieldValueSorted = [];
 
-    if(!keep_order) {
+    if (!keep_order) {
         fieldValueSorted = fieldValue.sort();
 
         target = target.sort();
@@ -74,12 +63,11 @@ export function __validate_equals_array({
     }
 
 
-
     if (JSON.stringify(fieldValueSorted) !== JSON.stringify(target)) {
-
-
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} value must be exactly same as "${target}"`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} value as array {value} must be exactly same as "${target}" ${keep_order ? 'in the same order' : ''}. You provided {target}.`;
     }
 
     if (!isValid) {
@@ -89,12 +77,18 @@ export function __validate_equals_array({
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
-    }
 
-    message = this.replaceTags(message, {
-        list: JSON.stringify(target),
-        value: JSON.stringify(fieldValue)
-    });
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
+    }
 
     return {
         isValid,

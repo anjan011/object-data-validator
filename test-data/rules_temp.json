@@ -1,80 +1,57 @@
 [
   {
-    "field_name": "birth_date",
-    "field_label": "Birth date",
-    "rules": [
-      {
-        "name": "required"
-      },
-      {
-        "name": "datetime_string",
-        "data": {
-          "format": "dd-MM-yyyy"
-        },
-        "message": "A valid birth date is required"
-      },
-      {
-        "name": "datetime_string_after",
-        "data": {
-          "date": "01-01-2025",
-          "format": "dd-MM-yyyy"
-        },
-        "message2": "You must be at least 18 years old"
-      }
-    ]
-
-  },
-  {
-    "field_name": "name",
-    "field_label": "Full name",
+    "field_name": "accidents.*.type",
+    "field_label": "Accident Type",
     "rules": [
       {
         "name": "required"
       },
       {
         "name": "string"
-      },
-      {
-        "name": "min_length",
-        "data": {
-          "length": 3
-        }
       }
     ]
   },
   {
-    "field_name": "age",
-    "field_label": "Age",
+    "field_name": "accidents.*.location",
+    "field_label": "Accident Location",
     "rules": [
       {
         "name": "required"
       },
       {
-        "name": "integer"
-      },
-      {
-        "name": "max_value",
-        "data": {
-          "value": "230"
-        }
+        "name": "string"
       }
     ]
   },
   {
-    "field_name": "amount",
-    "field_label": "Amount",
+    "field_name": "accidents.*.fire_cause",
+    "field_label": "Fire Cause",
     "rules": [
       {
-        "name": "required"
-      },
-      {
-        "name": "integer"
-      },
-      {
-        "name": "min_value",
+        "name": "required_if_target_equals",
         "data": {
-          "value": "10000"
+          "target_field": "accidents.*.type",
+          "value": "fire"
         }
+      },
+      {
+        "name": "string"
+      }
+    ]
+  },
+  {
+    "field_name": "accidents.*.date",
+    "field_label": "Accident Date",
+    "rules": [
+      {
+        "name": "required_if_target_equals",
+        "data": {
+          "target_field": "accidents.*.type",
+          "value": "fire"
+        }
+      },
+      {
+        "name": "datetime_string"
       }
     ]
   }

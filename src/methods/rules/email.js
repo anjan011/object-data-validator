@@ -3,7 +3,7 @@ export function __validate_email({ruleObj, fieldName, fieldLabel, index, hasNull
     let isValid = true;
     let message = '';
 
-    let fieldValue = this.getNestedValue(this.data, fieldName);
+    let fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
     /**
      * If has the nullable rule and value is an empty string,
@@ -17,13 +17,6 @@ export function __validate_email({ruleObj, fieldName, fieldLabel, index, hasNull
         };
     }
 
-    if(!(typeof fieldValue === 'string')) {
-        return {
-            isValid: false,
-            message: `For email address check the field value must be a string for field ${fieldName}`
-        };
-    }
-
     const emailRegex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
 
     const regex = new RegExp(emailRegex);
@@ -32,10 +25,12 @@ export function __validate_email({ruleObj, fieldName, fieldLabel, index, hasNull
      * Else, value must be a strict string data type!
      */
 
-    if (!fieldValue.match(regex)) {
+    if (typeof fieldLabel === "string" && !fieldValue.match(regex)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} is not a valid email address`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} is not a valid email address`;
     }
 
     if (!isValid) {
@@ -46,14 +41,22 @@ export function __validate_email({ruleObj, fieldName, fieldLabel, index, hasNull
 
         message = this.handleIndexInfo({message, index, ruleObj});
 
+        /**
+         * Replace tags ...
+         */
+
         message = this.replaceTags(message,{
-            value : fieldValue,
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
         });
     }
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

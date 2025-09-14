@@ -3,7 +3,7 @@ export function __validate_number({ruleObj, fieldName, fieldLabel, index, hasNul
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data, fieldName);
+    const fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
     /**
      * If has the nullable rule and value is an empty string,
@@ -17,28 +17,11 @@ export function __validate_number({ruleObj, fieldName, fieldLabel, index, hasNul
         };
     }
 
-    /**
-     * Else, value must be a strict string data type!
-     */
-
-    switch (typeof fieldValue) {
-        case 'number':
-            isValid = true;
-            break;
-        case 'string':
-
-            if (this._isEmptyString(fieldValue) || isNaN(Number(fieldValue))) {
-
-                isValid = false;
-                message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid number`;
-
-            }
-
-            break;
-        default:
-            isValid = false;
-            message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid number`;
-            break;
+    if(!(fieldValue !== '' && !isNaN(Number(fieldValue)))) {
+        isValid = false;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be a valid number`;
     }
 
     if (!isValid) {
@@ -48,11 +31,23 @@ export function __validate_number({ruleObj, fieldName, fieldLabel, index, hasNul
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

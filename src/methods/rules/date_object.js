@@ -24,7 +24,9 @@ export function __validate_date_object({ruleObj, fieldName, fieldLabel,index, ha
     if(!(fieldValue instanceof Date && !isNaN(fieldValue))) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid date object`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be a valid date object`;
     }
 
     if (!isValid) {
@@ -34,6 +36,17 @@ export function __validate_date_object({ruleObj, fieldName, fieldLabel,index, ha
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
     return {

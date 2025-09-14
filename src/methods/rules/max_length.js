@@ -3,7 +3,7 @@ export function __validate_max_length({ruleObj, fieldName, fieldLabel,index, has
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data,fieldName);
+    const fieldValue = this.getNestedValueAsString(this.data,fieldName);
 
 
 
@@ -20,43 +20,28 @@ export function __validate_max_length({ruleObj, fieldName, fieldLabel,index, has
     }
 
     /**
-     * Ensure the value is string ...
-     */
-
-    if (typeof fieldValue !== 'string') {
-        return {
-            isValid: false,
-            message: `${fieldLabel} must be a string to assert maximum length rule`,
-            fieldValue
-        }
-    }
-
-    /**
      * Else, value must be a strict string data type!
      */
 
-    let length = this.getNestedValue(ruleObj,'data.length');
+    let length = this.getNestedValueAsInteger(ruleObj,'data.length');
 
-    if(this.isNullOrUndefined(length)) {
+    if(length <= 0) {
         return {
             isValid: false,
-            message : `Target length is not provided for maximum length match for [${fieldName}]`
+            message : this.ruleError({
+                fieldName,
+                ruleName: ruleObj.name,
+                error : `Length must be greater than 0`
+            })
         };
     }
 
-    length = this.asInteger(length);
-
-    if (length < 1) {
-        return {
-            isValid: false,
-            message: `Target length must be at least 1 for maximum length match for [${fieldName}]`
-        };
-    }
-
-    if(fieldValue.length > length) {
+    if(!(fieldValue.length <= length)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be at most ${length} character${length > 1 ? 's' : ''} long`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} can be at most ${length} character${length > 1 ? 's' : ''} long`;
     }
 
     if (!isValid) {
@@ -66,16 +51,25 @@ export function __validate_max_length({ruleObj, fieldName, fieldLabel,index, has
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
-    message = this.replaceTags(message,{
-        length : length,
-        value : fieldValue
-    });
+
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

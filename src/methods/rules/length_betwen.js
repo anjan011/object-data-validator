@@ -9,7 +9,7 @@ export function __validate_length_between({
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data, fieldName);
+    const fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
 
     /**
@@ -24,73 +24,46 @@ export function __validate_length_between({
         };
     }
 
-    /**
-     * Ensure the value is string ...
-     */
-
-    if (typeof fieldValue !== 'string') {
-        return {
-            isValid: false,
-            message: `${fieldLabel} must be a string to assert length range rule`,
-            fieldValue
-        }
-    }
 
     /**
      * Get min length ...
      */
 
-    // region [Min Length]
+    // region [Min & Max Length]
 
-    let min_length = this.getNestedValue(ruleObj, 'data.min_length');
+    let min_length = this.getNestedValueAsInteger(ruleObj, 'data.min_length');
+    let max_length = this.getNestedValueAsInteger(ruleObj, 'data.max_length');
 
-    if (this.isNullOrUndefined(min_length)) {
+    if (min_length < 0) {
         return {
             isValid: false,
-            message: `Minimum length (data.min_length) is not provided for length range match for [${fieldName}]`
+            message: this.ruleError({
+                fieldName,
+                ruleName: ruleObj.name,
+                error: `Minimum length (data.min_length) must be at least 0`
+            })
         };
     }
 
-    min_length = this.asInteger(min_length);
-
-    if (min_length < 1) {
+    if (max_length < 0) {
         return {
             isValid: false,
-            message: `Minimum length must be at least 1 for length range match for [${fieldName}]`
+            message: this.ruleError({
+                fieldName,
+                ruleName: ruleObj.name,
+                error: `Maximum length (data.max_length) must be at least 0`
+            })
         };
     }
 
-    // endregion
-
-
-    /**
-     * Get max length ...
-     */
-
-    // region [Max Length]
-
-    let max_length = this.getNestedValue(ruleObj, 'data.max_length');
-
-    if (this.isNullOrUndefined(max_length)) {
+    if(min_length >= max_length) {
         return {
             isValid: false,
-            message: `Maximum length (data.max_length) is not provided for length range match for [${fieldName}]`
-        };
-    }
-
-    max_length = this.asInteger(max_length);
-
-    if (max_length < 1) {
-        return {
-            isValid: false,
-            message: `Maximum length must be at least 1 for length range match for [${fieldName}]`
-        };
-    }
-
-    if(max_length <= min_length) {
-        return {
-            isValid: false,
-            message: `Maximum length must be greater than minimum length for length range match for [${fieldName}]`
+            message: this.ruleError({
+                fieldName,
+                ruleName: ruleObj.name,
+                error: `Maximum length (data.max_length) must be greater than minimum length (data.min_length)`
+            })
         };
     }
 
@@ -101,27 +74,38 @@ export function __validate_length_between({
     if (!(fieldValue.length >= min_length && fieldValue.length <= max_length)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} length must be between ${min_length} and ${max_length}`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} length must be between and including ${min_length} and ${max_length}`;
     }
 
     if (!isValid) {
+
         /**
          * handle index in case this is applied via wildcard or dot
          * syntax. E.g. person.name, employee.*.name, etc.
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
-    message = this.replaceTags(message, {
-        min_length: min_length,
-        max_length: max_length,
-        value: fieldValue
-    });
+
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

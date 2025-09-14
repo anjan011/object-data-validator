@@ -133,3 +133,14 @@ export function getNestedValueAsPlainObject(obj = {}, path = '', defaultValue = 
 
     return value;
 }
+
+export function getNestedValueAsDateFormat(obj = {}, path = '', defaultValue = 'yyyy-MM-dd') {
+
+    let value = this.getNestedValue(obj, path);
+
+    if (this.isNullOrUndefined(value) || (typeof value !== 'string') || this._isEmptyString(value)) {
+        return defaultValue;
+    }
+
+    return value;
+}

@@ -24,7 +24,9 @@ export function __validate_string({ruleObj, fieldName, fieldLabel,index, hasNull
     if(typeof fieldValue !== 'string') {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid string`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be a valid string`;
     }
 
     if (!isValid) {
@@ -34,11 +36,23 @@ export function __validate_string({ruleObj, fieldName, fieldLabel,index, hasNull
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

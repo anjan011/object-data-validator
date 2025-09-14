@@ -3,28 +3,19 @@ export function __validate_regex_match({ruleObj, fieldName, fieldLabel, index, h
     let isValid = true;
     let message = '';
 
-    let fieldValue = this.getNestedValue(this.data, fieldName);
+    let fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
     /**
      * If has the nullable rule and value is an empty string,
      * the rule passes.
      */
 
-    if (hasNullableRule && this._isEmptyString(fieldValue)) {
+    if (hasNullableRule && this.isEmpty(fieldValue)) {
         return {
             isValid: true,
             message: ''
         };
     }
-
-    if(!(typeof fieldValue === 'string' || typeof fieldValue === 'number')) {
-        return {
-            isValid: false,
-            message: `For regex match value must be a string or number for ${fieldName}`
-        };
-    }
-
-    fieldValue = fieldValue.toString();
 
     /**
      * Get regex ...
@@ -39,7 +30,11 @@ export function __validate_regex_match({ruleObj, fieldName, fieldLabel, index, h
         if(!(regex instanceof RegExp)) {
             return {
                 isValid: false,
-                message: `For regex match value the target must be a valid regex string or an instance of RegExp for ${fieldName}`
+                message: this.ruleError({
+                    fieldName,
+                    ruleName: ruleObj.name,
+                    error : `For regex match value the target must be a valid regex string or an instance of RegExp for ${fieldName}`
+                })
             };
         }
 
@@ -52,7 +47,9 @@ export function __validate_regex_match({ruleObj, fieldName, fieldLabel, index, h
     if (!fieldValue.match(regex)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} did not match the regular expression`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} did not match the regular expression`;
     }
 
     if (!isValid) {
@@ -63,15 +60,22 @@ export function __validate_regex_match({ruleObj, fieldName, fieldLabel, index, h
 
         message = this.handleIndexInfo({message, index, ruleObj});
 
+        /**
+         * Replace tags ...
+         */
+
         message = this.replaceTags(message,{
-            value : fieldValue,
-            regex : regex.toString()
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
         });
     }
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

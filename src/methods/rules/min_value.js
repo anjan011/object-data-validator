@@ -3,7 +3,7 @@ export function __validate_min_value({ruleObj, fieldName, fieldLabel, index, has
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data, fieldName);
+    const fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
 
     /**
@@ -11,7 +11,7 @@ export function __validate_min_value({ruleObj, fieldName, fieldLabel, index, has
      * the rule passes.
      */
 
-    if (hasNullableRule && this.isNullOrUndefined(fieldValue)) {
+    if (hasNullableRule && this._isEmptyString(fieldValue)) {
         return {
             isValid: true,
             message: ''
@@ -19,15 +19,15 @@ export function __validate_min_value({ruleObj, fieldName, fieldLabel, index, has
     }
 
     const num = Number(fieldValue);
-    const minValue = this.getNestedValueAsNumber(ruleObj.data, 'value', null);
+    const minValue = this.getNestedValueAsNumber(ruleObj.data, 'value', 0);
 
-    if (null === minValue) {
+    if ( minValue <= 0) {
         return {
             isValid: false,
-            message: this.ruleError({
+            message : this.ruleError({
                 fieldName,
                 ruleName: ruleObj.name,
-                error: 'The rule "min_value" requires a numeric "value" property to be set.'
+                error: 'Min value must be lesser than or equal to 0'
             })
         };
     }
@@ -39,7 +39,9 @@ export function __validate_min_value({ruleObj, fieldName, fieldLabel, index, has
     if (!(!isNaN(num) && num >= minValue)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be greater than or equal to ${minValue}`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be lesser than or equal to ${minValue}`;
     }
 
     if (!isValid) {
@@ -51,18 +53,21 @@ export function __validate_min_value({ruleObj, fieldName, fieldLabel, index, has
         message = this.handleIndexInfo({message, index, ruleObj});
 
         /**
-         * Replace tags
+         * Replace tags ...
          */
 
-        message = this.replaceTags(message, {
-            value: fieldValue,
-            min_value : minValue
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
         });
     }
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

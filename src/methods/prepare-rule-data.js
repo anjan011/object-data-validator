@@ -21,6 +21,13 @@ export function prepareRuleDataFromParts({ruleName,data}) {
             ruleData.min_length = rangeParts[0];
             ruleData.max_length = rangeParts[1];
             break;
+        case 'max_value':
+        case 'min_value':
+            ruleData.value = data;
+            break;
+        case 'regex_match':
+            ruleData.regex = data;
+            break;
         default:
             break;
     }

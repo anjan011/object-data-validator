@@ -10,7 +10,7 @@ export function __validate_object({ruleObj, fieldName, fieldLabel,index, hasNull
      * the rule passes.
      */
 
-    if(hasNullableRule && this._isEmptyObject(fieldValue)) {
+    if(hasNullableRule && this.isEmpty(fieldValue)) {
         return  {
             isValid : true,
             message : ''
@@ -24,7 +24,9 @@ export function __validate_object({ruleObj, fieldName, fieldLabel,index, hasNull
     if(!this.isPlainObject(fieldValue)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid object`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be a valid object`;
     }
 
     if (!isValid) {
@@ -34,6 +36,17 @@ export function __validate_object({ruleObj, fieldName, fieldLabel,index, hasNull
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
     return {

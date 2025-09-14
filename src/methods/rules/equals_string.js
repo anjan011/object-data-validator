@@ -9,7 +9,7 @@ export function __validate_equals_string({
     let isValid = true;
     let message = '';
 
-    let fieldValue = this.getNestedValue(this.data, fieldName);
+    let fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
 
     /**
@@ -25,29 +25,10 @@ export function __validate_equals_string({
     }
 
     /**
-     * Ensure the value is string ...
-     */
-
-    if (typeof fieldValue !== 'string') {
-        return {
-            isValid: false,
-            message: `${fieldLabel} must be a string to assert equal strings rule`,
-            fieldValue
-        }
-    }
-
-    /**
      * Else, value must be a strict string data type!
      */
 
-    let target = this.getNestedValue(ruleObj, 'data.target');
-
-    if (typeof target !== 'string') {
-        return {
-            isValid: false,
-            message: `Target value must be a string for equals strings match for [${fieldName}]`
-        };
-    }
+    let target = this.getNestedValueAsString(ruleObj, 'data.target');
 
     let ignore_case = !!this.getNestedValue(ruleObj,'data.ignore_case');
 
@@ -59,7 +40,9 @@ export function __validate_equals_string({
     if (fieldValue !== target) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly same as: "${target}"`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be exactly same as: "${target}" ${ignore_case ? '(case insensitive)' : '(case sensitive)'}. You provided "${fieldValue}"`;
     }
 
     if (!isValid) {
@@ -69,12 +52,20 @@ export function __validate_equals_string({
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
-    message = this.replaceTags(message, {
-        target: target,
-        value: fieldValue
-    });
+
 
     return {
         isValid,

@@ -1,6 +1,10 @@
 {
-  "birth_date": "01-01-2025",
-  "name": "John Doe",
-  "age" : 65,
-  "amount": -5000
+  "accidents": [
+    {
+      "type": "water",
+      "location": "123 Main St",
+      "fire_cause": "Electrical",
+      "date": ""
+    }
+  ]
 }

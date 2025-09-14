@@ -1,7 +1,7 @@
-import {hello} from "./methods/hello";
 import {asInteger, asNumber, asString} from "./methods/data-conversion";
 import {
-    getNestedValue, getNestedValueAsArray, getNestedValueAsBoolean, getNestedValueAsInteger, getNestedValueAsNumber,
+    getNestedValue, getNestedValueAsArray, getNestedValueAsBoolean,
+    getNestedValueAsDateFormat, getNestedValueAsInteger, getNestedValueAsNumber,
     getNestedValueAsPlainObject,
     getNestedValueAsString,
     isNullOrUndefined,
@@ -25,7 +25,7 @@ import {validateRulesArray} from "./methods/validate-rules-array";
 import {validateWildcard} from "./methods/validate-wildcard";
 import {__validate_array} from "./methods/rules/array";
 import {__validate_date_object} from "./methods/rules/date_object";
-import {__validate_datetime_string} from "./methods/rules/datetime_string";
+import {__validate_date_string} from "./methods/rules/date_string";
 import {__validate_email} from "./methods/rules/email";
 import {__validate_equals_array} from "./methods/rules/equals_array";
 import {__validate_equals_number} from "./methods/rules/equals_number";
@@ -51,11 +51,14 @@ import {__validate_required_if_target_not_equals} from "./methods/rules/required
 import {__validate_string} from "./methods/rules/string";
 import {__validate_length_between} from "./methods/rules/length_betwen";
 import {__validate_required_if_target_in_array} from "./methods/rules/required_if_target_in_array";
-import {__validate_datetime_string_before} from "./methods/rules/datetime_string_before";
-import {__validate_datetime_string_after} from "./methods/rules/datetime_string_after";
+import {__validate_date_string_before} from "./methods/rules/date_string_before";
 import {__validate_custom} from "./methods/rules/custom";
 import {__validate_min_value} from "./methods/rules/min_value";
 import {__validate_max_value} from "./methods/rules/max_value";
+import {__validate_date_string_after} from "./methods/rules/date_string_after";
+import {prepareTargetDate} from "./methods/prepare_target_date";
+import {__validate_date_string_between} from "./methods/rules/date_string_between";
+import {generateRuleDataTemplateTagValues} from "./methods/rule-data-template-tags";
 
 class ObjectDataValidator {
 
@@ -93,6 +96,7 @@ ObjectDataValidator.prototype.objHasProp = objHasProp;
 
 ObjectDataValidator.prototype.getNestedValue = getNestedValue;
 ObjectDataValidator.prototype.getNestedValueAsString = getNestedValueAsString;
+ObjectDataValidator.prototype.getNestedValueAsDaeFormat = getNestedValueAsDateFormat;
 ObjectDataValidator.prototype.getNestedValueAsArray = getNestedValueAsArray;
 ObjectDataValidator.prototype.getNestedValueAsBoolean = getNestedValueAsBoolean;
 ObjectDataValidator.prototype.getNestedValueAsInteger = getNestedValueAsInteger;
@@ -156,8 +160,6 @@ ObjectDataValidator.prototype.validateWildcard = validateWildcard;
 // individual rule validation handlers ...
 
 ObjectDataValidator.prototype.__validate_array = __validate_array;
-ObjectDataValidator.prototype.__validate_date_object = __validate_date_object;
-ObjectDataValidator.prototype.__validate_datetime_string = __validate_datetime_string;
 ObjectDataValidator.prototype.__validate_email = __validate_email;
 ObjectDataValidator.prototype.__validate_equals_array = __validate_equals_array;
 ObjectDataValidator.prototype.__validate_equals_number = __validate_equals_number;
@@ -184,13 +186,31 @@ ObjectDataValidator.prototype.__validate_required_if_target_not_equals = __valid
 ObjectDataValidator.prototype.__validate_string = __validate_string;
 ObjectDataValidator.prototype.__validate_required_if_target_in_array = __validate_required_if_target_in_array;
 
-ObjectDataValidator.prototype.__validate_datetime_string_before = __validate_datetime_string_before;
-ObjectDataValidator.prototype.__validate_datetime_string_after = __validate_datetime_string_after;
+/**
+ * Date related ...
+ */
+
+ObjectDataValidator.prototype.__validate_date_object = __validate_date_object;
+ObjectDataValidator.prototype.__validate_date_string = __validate_date_string;
+ObjectDataValidator.prototype.__validate_date_string_before = __validate_date_string_before;
+ObjectDataValidator.prototype.__validate_date_string_after = __validate_date_string_after;
+ObjectDataValidator.prototype.__validate_date_string_between = __validate_date_string_between;
 
 ObjectDataValidator.prototype.__validate_custom = __validate_custom;
 ObjectDataValidator.prototype.__validate_min_value = __validate_min_value;
 ObjectDataValidator.prototype.__validate_max_value = __validate_max_value;
 
+/**
+ * Prepare target date ...
+ */
+
+ObjectDataValidator.prototype.prepareTargetDate = prepareTargetDate;
+
+/**
+ * Others ...
+ */
+
+ObjectDataValidator.prototype.generateRuleDataTemplateTagValues = generateRuleDataTemplateTagValues;
 
 /**
  * Finally export!

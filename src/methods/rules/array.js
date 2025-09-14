@@ -24,7 +24,9 @@ export function __validate_array ({ruleObj, fieldName, fieldLabel,index, hasNull
     if(!Array.isArray(fieldValue)) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be a valid array`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be a valid array`;
     }
 
     if (!isValid) {
@@ -34,6 +36,17 @@ export function __validate_array ({ruleObj, fieldName, fieldLabel,index, hasNull
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
     return {

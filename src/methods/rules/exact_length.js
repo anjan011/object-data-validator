@@ -1,62 +1,45 @@
-export function __validate_exact_length({ruleObj, fieldName, fieldLabel,index, hasNullableRule}) {
+export function __validate_exact_length({ruleObj, fieldName, fieldLabel, index, hasNullableRule}) {
 
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValue(this.data,fieldName);
-
-
+    const fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
     /**
      * If has the nullable rule and value is an empty string,
      * the rule passes.
      */
 
-    if(hasNullableRule && this._isEmptyString(fieldValue)) {
-        return  {
-            isValid : true,
-            message : ''
-        };
-    }
-
-    /**
-     * Ensure the value is string ...
-     */
-
-    if (typeof fieldValue !== 'string') {
+    if (hasNullableRule && this._isEmptyString(fieldValue)) {
         return {
-            isValid: false,
-            message: `${fieldLabel} must be a string to assert exact length rule`,
-            fieldValue
-        }
+            isValid: true,
+            message: ''
+        };
     }
 
     /**
      * Else, value must be a strict string data type!
      */
 
-    let length = this.getNestedValue(ruleObj,'data.length');
-
-    if(this.isNullOrUndefined(length)) {
-        return {
-            isValid: false,
-            message : `Target length is not provided for exact length match for [${fieldName}]`
-        };
-    }
-
-    length = this.asInteger(length);
+    let length = this.getNestedValueAsInteger(ruleObj, 'data.length', 0);
 
     if (length < 1) {
         return {
             isValid: false,
-            message: `Target length must be at least 1 for exact length match for [${fieldName}]`
+            message: this.ruleError({
+                fieldName,
+                ruleName: ruleObj.name,
+                details: `Invalid or missing target length`
+            })
         };
     }
 
-    if(fieldValue.length !== length) {
+    if (fieldValue.length !== length) {
 
         isValid = false;
-        message = ruleObj.message ? ruleObj.message : `${fieldLabel} must be exactly ${length} character${length > 1 ? 's' : ''} long`;
+        message = ruleObj.message ?
+            ruleObj.message :
+            `${fieldLabel} must be exactly ${length} character${length > 1 ? 's' : ''} long`;
     }
 
     if (!isValid) {
@@ -66,16 +49,24 @@ export function __validate_exact_length({ruleObj, fieldName, fieldLabel,index, h
          */
 
         message = this.handleIndexInfo({message, index, ruleObj});
+
+        /**
+         * Replace tags ...
+         */
+
+        message = this.replaceTags(message,{
+            field_name : fieldName,
+            field_label : fieldLabel,
+            field_value : fieldValue,
+            ...this.generateRuleDataTemplateTagValues(ruleObj.data)
+        });
     }
 
-    message = this.replaceTags(message,{
-        length : length,
-        value : fieldValue
-    });
 
     return {
         isValid,
-        message
+        message,
+        fieldValue
     };
 
 }

@@ -1,11 +1,13 @@
 export function __validate_nullable({ruleObj, fieldName, fieldLabel,index, hasNullableRule}) {
 
-    let isValid = true;
-    let message = '';
+    /**
+     * Its nullable!
+     * So, it always passes!
+     */
 
     return {
-        isValid,
-        message
+        isValid : true,
+        message : ''
     };
 
 }
