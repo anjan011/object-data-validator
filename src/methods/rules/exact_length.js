@@ -34,7 +34,7 @@ export function __validate_exact_length({ruleObj, fieldName, fieldLabel, index, 
         };
     }
 
-    if (fieldValue.length !== length) {
+    if (fieldValue && fieldValue.length !== length) {
 
         isValid = false;
         message = ruleObj.message ?
