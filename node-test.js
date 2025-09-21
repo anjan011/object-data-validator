@@ -7,13 +7,9 @@ const ObjectDataValidator = require('./dist/bundle.cjs.js');
 
 const data = {
 
-    accidents: [
-        {
-            hadInjuries: 'Yes',
-            injuryDescription: 'Injuries description here',
-            injuryDate: '01-12-1998'
-        }
-    ]
+   hasChildrenUnder16 : 'Yes',
+   numChildrenUnder16 : 10,
+   
 };
 
 // Generate a regex rule for alpha numeric characters only
@@ -22,26 +18,40 @@ const regex = "^(?=.*[a-zA-Z])(?=.*[0-9])[A-Za-z0-9]+$";
 
 const rules = [
     {
-        field_name: 'accidents.*.injuryDate',
-        field_label: 'Injury Date',
+        field_name: 'hasChildrenUnder16',
+        field_label: 'Has children under 16',
         rules: [
             {
-                name: 'required_if_target_not_equals',
-                data: {
-                    target_field: 'accidents.*.hadInjuries',
-                    value : 'No'
-                },
-                message: '{field_label} is required if you had injuries @ Accident Form #{index}'
+                name: 'required',
+                message: 'Please specify if you have children under 16'
             },
-            {
-                name: 'date_string',
-                data : {
-                    format : `dd-MM-yyyy`
-                }
-            }
         ]
 
-    }
+    },
+   {
+      field_name: 'numChildrenUnder16',
+      field_label: 'Number of children under 16',
+      rules: [
+         {
+            name : 'required_if_target_equals',
+            data :  {
+               target_field : 'hasChildrenUnder16',
+               value : 'Yes'
+            },
+            message: 'Please specify the number of children under 16'
+         },
+         {
+            name: 'integer',
+            message: 'Number of children under 16 must be an integer'
+         },
+         {
+            name: 'lesser',
+            data: {
+               target: 10
+            }
+         }
+      ]
+   }
 ];
 
 // Create an instance of your class
