@@ -3,7 +3,7 @@ export function __validate_greater_or_equal({ruleObj, fieldName, fieldLabel, ind
     let isValid = true;
     let message = '';
 
-    const fieldValue = this.getNestedValueAsNumber(this.data, fieldName);
+    let fieldValue = this.getNestedValueAsString(this.data, fieldName);
 
     /**
      * If has the nullable rule and value is an empty string,
@@ -27,13 +27,21 @@ export function __validate_greater_or_equal({ruleObj, fieldName, fieldLabel, ind
      * Else, value must be a strict string data type!
      */
 
-    if (!(fieldValue >= target)) {
-
-        isValid = false;
-        message = ruleObj.message ?
-            ruleObj.message :
-            `${fieldLabel} must be greater than or equal to ${target}`;
+    if(fieldValue !== '') {
+       
+       fieldValue = Number(fieldValue);
+       
+       if (isNaN(fieldValue) || !(fieldValue >= target)) {
+          
+          isValid = false;
+          message = ruleObj.message ?
+             ruleObj.message :
+             `${fieldLabel} must be greater than or equal to ${target}`;
+       }
+       
     }
+    
+    
 
     if (!isValid) {
 
