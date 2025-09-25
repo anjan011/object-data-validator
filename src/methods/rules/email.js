@@ -25,7 +25,7 @@ export function __validate_email({ruleObj, fieldName, fieldLabel, index, hasNull
      * Else, value must be a strict string data type!
      */
 
-    if (typeof fieldLabel === "string" && !fieldValue.match(regex)) {
+    if (fieldValue && typeof fieldLabel === "string" && !fieldValue.match(regex)) {
 
         isValid = false;
         message = ruleObj.message ?

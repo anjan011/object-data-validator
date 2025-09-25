@@ -21,7 +21,7 @@ export function __validate_string({ruleObj, fieldName, fieldLabel,index, hasNull
      * Else, value must be a strict string data type!
      */
 
-    if(typeof fieldValue !== 'string') {
+    if(fieldValue && typeof fieldValue !== 'string') {
 
         isValid = false;
         message = ruleObj.message ?

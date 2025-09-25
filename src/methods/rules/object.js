@@ -21,7 +21,7 @@ export function __validate_object({ruleObj, fieldName, fieldLabel,index, hasNull
      * Else, value must be a strict string data type!
      */
 
-    if(!this.isPlainObject(fieldValue)) {
+    if(fieldValue && !this.isPlainObject(fieldValue)) {
 
         isValid = false;
         message = ruleObj.message ?
